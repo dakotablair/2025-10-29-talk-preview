@@ -1,0 +1,53 @@
+name: Traffic monitor
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+  schedule:
+    - cron:  '27 16 * * *'
+  workflow_dispatch:
+
+jobs:
+  detect-traffic:
+    runs-on: ubuntu-latest
+    steps:
+
+    # Check out repo
+    - name: Check out this repo
+      uses: actions/checkout@v4
+
+    - name: Build traffic detector image
+      shell: bash
+      run: |
+          docker build \
+              --format docker \
+              -f Dockerfile \
+              -t aid-2025-10-29
+
+    - name: Run traffic detector
+      shell: bash
+      run: |
+          docker build \
+              --format docker \
+              -env OUTPUT_DIRECTORY=$(pwd) \
+              -f Dockerfile \
+              -v $(pwd):$(pwd) \
+              -t aid-2025-10-29
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+        name: traffic-picture
+        path: predictions.jpg
+        retention-days: 7
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v4
+      with:
+        name: traffic-labels
+        path: out.txt
+        retention-days: 7
