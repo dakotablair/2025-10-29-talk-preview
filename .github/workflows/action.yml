@@ -24,19 +24,18 @@ jobs:
       shell: bash
       run: |
           docker build \
-              --format docker \
               -f Dockerfile \
-              -t aid-2025-10-29
+              -t aid-2025-10-29 \
+              .
 
     - name: Run traffic detector
       shell: bash
       run: |
-          docker build \
-              --format docker \
-              -env OUTPUT_DIRECTORY=$(pwd) \
-              -f Dockerfile \
+          docker run --rm \
+              --privileged \
+              --env OUTPUT_DIRECTORY=$(pwd) \
               -v $(pwd):$(pwd) \
-              -t aid-2025-10-29
+              aid-2025-10-29
 
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v4
