@@ -41,12 +41,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: traffic-picture
-        path: predictions.jpg
-        retention-days: 7
-
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v4
-      with:
-        name: traffic-labels
-        path: out.txt
+        path: traffic.jpg
         retention-days: 7

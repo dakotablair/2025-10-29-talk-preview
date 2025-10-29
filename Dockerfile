@@ -1,11 +1,6 @@
-FROM debian:latest
+FROM ultralytics/ultralytics:latest-cpu
 
 RUN apt update
-RUN apt install -y curl g++ gcc git make tmux vim wget
-RUN git clone https://github.com/pjreddie/darknet
-WORKDIR darknet
-RUN make
-RUN wget https://data.pjreddie.com/files/yolov3.weights
-WORKDIR /
+RUN apt install -y less tmux vim
 COPY scripts/traffic.sh /traffic.sh
-ENTRYPOINT ["./traffic.sh"]
+ENTRYPOINT ["/traffic.sh"]
